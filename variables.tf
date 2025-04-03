@@ -124,3 +124,15 @@ variable "access_log_bucket_name" {
   default     = ""
   description = "Name of the S3 bucket where s3 access log will be sent to"
 }
+
+variable "access_analyzer_enabled" {
+  description = "Flag to enable IAM Access Analyzer permissions"
+  type        = bool
+  default     = false
+}
+
+variable "access_analyzer_account_ids" {
+  description = "List of AWS account IDs to grant access to"
+  type        = list(string)
+  default     = []
+}

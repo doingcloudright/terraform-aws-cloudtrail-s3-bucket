@@ -1,6 +1,36 @@
 data "aws_iam_policy_document" "default" {
   count = module.this.enabled ? 1 : 0
 
+  dynamic "statement" {
+    for_each = var.access_analyzer_enabled ? [1] : []
+
+    content {
+      sid    = "PolicyGenerationBucketPolicy"
+      effect = "Allow"
+
+      principals {
+        type        = "Service"
+        identifiers = ["access-analyzer.amazonaws.com"]
+      }
+
+      actions = [
+        "s3:GetObject",
+        "s3:ListBucket"
+      ]
+
+      resources = [
+        "arn:aws:s3:::${var.cloudtrail_bucket_name}",
+        "arn:aws:s3:::${var.cloudtrail_bucket_name}/AWSLogs/*"
+      ]
+
+      condition {
+        test     = "StringEquals"
+        variable = "aws:SourceAccount"
+        values   = var.access_analyzer_account_ids
+      }
+    }
+  }
+
   statement {
     sid = "AWSCloudTrailAclCheck"
 
