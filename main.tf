@@ -19,8 +19,8 @@ data "aws_iam_policy_document" "default" {
       ]
 
       resources = [
-        "arn:aws:s3:::${var.cloudtrail_bucket_name}",
-        "arn:aws:s3:::${var.cloudtrail_bucket_name}/AWSLogs/*"
+        "${var.arn_format}:s3:::${module.this.id}",
+        "${var.arn_format}:s3:::${module.this.id}/AWSLogs/*",
       ]
 
       condition {
