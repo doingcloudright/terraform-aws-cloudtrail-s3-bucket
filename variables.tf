@@ -136,3 +136,9 @@ variable "access_analyzer_account_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "organization_id" {
+  description = "AWS Organization ID"
+  type        = string
+  default     = ""
+}

@@ -52,8 +52,8 @@ data "aws_iam_policy_document" "default" {
       effect = "Allow"
 
       principals {
-        type        = "Service"
-        identifiers = ["access-analyzer.amazonaws.com"]
+        type        = "AWS"
+        identifiers = ["*"]
       }
 
       actions = [
@@ -68,10 +68,17 @@ data "aws_iam_policy_document" "default" {
 
       condition {
         test     = "StringEquals"
-        variable = "aws:SourceAccount"
-        values   = var.access_analyzer_account_ids
+        variable = "aws:PrincipalOrgID"
+        values   = [var.organization_id]
+      }
+
+      condition {
+        test     = "StringLike"
+        variable = "aws:PrincipalArn"
+        values   = formatlist("arn:aws:iam::%s:role/service-role/AccessAnalyzerMonitorServiceRole*", var.access_analyzer_account_ids)
       }
     }
+
   }
 }
 
