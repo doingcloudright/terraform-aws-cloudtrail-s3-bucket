@@ -109,5 +109,7 @@ module "s3_bucket" {
   restrict_public_buckets                = var.restrict_public_buckets
   access_log_bucket_name                 = var.access_log_bucket_name
 
+  s3_object_ownership = "BucketOwnerEnforced"
+
   context = module.this.context
 }
